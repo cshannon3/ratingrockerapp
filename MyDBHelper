@@ -1,0 +1,190 @@
+package com.ratingrocker.sqlitesample;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class MyDBHandler extends SQLiteOpenHelper {
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "songdata.db";
+    // Table Names
+    public static final String TABLE_MAIN = "main";
+    public static final String TABLE_GENRES = "genres";
+    public static final String TABLE_VIBEONE = "vibeone";
+    public static final String TABLE_VIBETWO = "vibetwo";
+    public static final String TABLE_VIBETHREE = "vibethree";
+    public static final String TABLE_USER = "user";
+    // Common Column Names
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_FRESHVAL = "_freshval";
+    public static final String COLUMN_RATINGVAL = "_ratingval";
+    public static final String COLUMN_RATECOUNT = "_ratecount";
+
+
+    //User Table column names
+
+    // GENRE TABLE column names
+    public static final String COLUMN_G_ONE_VAL = "_goneval";
+    public static final String COLUMN_G_TWO_VAL = "_gtwoval";
+    public static final String COLUMN_G_THREE_VAL = "_gthreeval";
+    public static final String COLUMN_G_FOUR_VAL = "_gfourval";
+    public static final String COLUMN_G_FIVE_VAL = "_gfiveval";
+
+
+    // SONG Data Table MAIN - column names
+    private static final String COLUMN_SONGID = "_songid";
+    private static final String KEY_VIBEONE_ID = "vibeone_id";
+    private static final String KEY_VIBETWO_ID = "vibetwo_id";
+    private static final String KEY_VIBETHREE_ID = "vibethree_id";
+    private static final String KEY_GENRE_ID = "tag_id";
+
+    // Table Create Statements
+    // Todo table create statement
+    // todo maybe add main key id to vibe tables for easier data aqusition
+    // Genre Table
+    private static final String CREATE_TABLE_GENRES = "CREATE TABLE " + TABLE_GENRES
+            + "(" + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_G_ONE_VAL + " INTEGER," + COLUMN_G_TWO_VAL + " INTEGER,"
+            + COLUMN_G_THREE_VAL + " INTEGER," + COLUMN_G_FOUR_VAL + " INTEGER," + COLUMN_G_FIVE_VAL + " INTEGER" + ")";
+
+    // Vibe tables
+    private static final String CREATE_TABLE_VIBEONE = "CREATE TABLE " + TABLE_VIBEONE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY,"
+            + COLUMN_SONGID + " INTEGER," + COLUMN_RATINGVAL + " INTEGER," + COLUMN_RATECOUNT + " INTEGER," + COLUMN_FRESHVAL + " INTEGER" + ")";
+
+    private static final String CREATE_TABLE_VIBETWO = "CREATE TABLE " + TABLE_VIBETWO + "(" + COLUMN_ID + " INTEGER PRIMARY KEY,"
+            + COLUMN_SONGID + " INTEGER," + COLUMN_RATINGVAL + " INTEGER," + COLUMN_RATECOUNT + " INTEGER," + COLUMN_FRESHVAL + " INTEGER" + ")";
+
+    private static final String CREATE_TABLE_VIBETHREE = "CREATE TABLE " + TABLE_VIBETHREE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY,"
+            + COLUMN_SONGID + " INTEGER," + COLUMN_RATINGVAL + " INTEGER," + COLUMN_RATECOUNT + " INTEGER," + COLUMN_FRESHVAL + " INTEGER" + ")";
+
+    private static final String CREATE_TABLE_MAIN = "CREATE TABLE " + TABLE_MAIN + "(" + COLUMN_ID + " INTEGER PRIMARY KEY,"  +
+            KEY_VIBEONE_ID + " INTEGER," + KEY_VIBETWO_ID + " INTEGER," + KEY_VIBETHREE_ID + " INTEGER,"
+            + KEY_GENRE_ID + " INTEGER" + ")";
+
+    // Tag table create statement
+
+    // todo_tag table create statement
+
+
+    public MyDBHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+
+        // creating required tables
+        db.execSQL(CREATE_TABLE_GENRES);
+        db.execSQL(CREATE_TABLE_VIBEONE);
+        db.execSQL(CREATE_TABLE_VIBETWO);
+        db.execSQL(CREATE_TABLE_VIBETHREE);
+        db.execSQL(CREATE_TABLE_MAIN);
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // on upgrade drop older tables
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_GENRES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_VIBEONE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_VIBETWO);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_VIBETHREE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MAIN);
+
+
+        // create new tables
+        onCreate(db);
+    }
+
+
+//Todo make list actually ordered
+// for now just going to add songs to bottom so i can test sooner
+    public void createVibeOneData(Vibeonedata vibeone, long[] tag_ids) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SONGID, genre.get_songid());
+        values.put(COLUMN_RATINGVAL, vibeone.get_ratingval());
+        values.put(COLUMN_FRESHVAL, vibeone.get_freshvalue());
+        values.put(COLUMN_RATECOUNT, vibeone.get_ratecount());
+
+        // insert row - not sure if I need to give it an id cuz song id works
+        // If i wanted to link this id to a main table id need to use something
+        //Like below
+        /*
+        long vibeone_id = db.insert(TABLE_VIBEONE, null, values);
+
+        //assigning tags to todo
+
+        for (long tag_id : tag_ids) {
+            createVibeGenre(vibeone_id, tag_id);
+        }
+        return vibeone_id;
+        */
+        db.insert(TABLE_VIBEONE, null, values);
+        // Currently I have create data starting at genre so genre id is linked here
+        // Better since genre info will be in order/easily fetchable
+
+    }
+    public void createVibeTwoData(Vibetwodata vibetwo, long[] tag_ids) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SONGID, vibetwo.get_songid());
+        values.put(COLUMN_RATINGVAL, vibetwo.get_ratingval());
+        values.put(COLUMN_FRESHVAL, vibetwo.get_freshvalue());
+        values.put(COLUMN_RATECOUNT, vibetwo.get_ratecount());
+
+        // insert row - not sure if I need to give it an id cuz song id works
+        //long vibe_id =
+        db.insert(TABLE_VIBETWO, null, values);
+
+        /*/ assigning tags to todo
+        /
+        for (long tag_id : tag_ids) {
+            createTodoTag(todo_id, tag_id);
+        }
+        */
+    }
+    public void createVibeThreeData(Vibethreedata vibethree) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SONGID, vibethree.get_songid());
+        values.put(COLUMN_RATINGVAL, vibethree.get_ratingval());
+        values.put(COLUMN_FRESHVAL, vibethree.get_freshvalue());
+        values.put(COLUMN_RATECOUNT, vibethree.get_ratecount());
+
+        // insert row - not sure if I need to give it an id cuz song id works
+        //long vibe_id =
+        db.insert(TABLE_VIBETHREE, null, values);
+
+        /*/ assigning tags to todo
+        /
+        for (long tag_id : tag_ids) {
+            createTodoTag(todo_id, tag_id);
+        }
+        */
+    }
+    public void createGenredata(Genredata genredata, long[] tag_ids) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SONGID, .get_songid());
+        values.put(COLUMN_RATINGVAL, vibethree.get_ratingval());
+        values.put(COLUMN_FRESHVAL, vibethree.get_freshvalue());
+        values.put(COLUMN_RATECOUNT, vibethree.get_ratecount());
+
+        // insert row - not sure if I need to give it an id cuz song id works
+        //long vibe_id =
+        db.insert(TABLE_VIBETHREE, null, values);
+
+        /*/ assigning tags to todo
+        /
+        for (long tag_id : tag_ids) {
+            createTodoTag(todo_id, tag_id);
+        }
+        */
+    }
+
+}
