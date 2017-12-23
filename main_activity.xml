@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    tools:context="com.ratingrocker.httpwww.ratingrockerapp.MainActivity">
+
+
+    <Button
+        android:id="@+id/songbutton"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:text="@string/getsong"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/metadata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/song_info"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="11dp" />
+
+    <TextView
+        android:id="@+id/SongName"
+        android:layout_width="163dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="23dp"
+        android:text="@string/song_name"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+
+        tools:layout_editor_absoluteX="124dp"
+        tools:layout_editor_absoluteY="41dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="59dp" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/gridLayout2"
+        android:layout_below="@+id/playbackbargrid"
+        android:layout_alignParentEnd="true">
+
+        <CheckedTextView
+            android:id="@+id/checkboxtextGenre1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:checkMark="@android:drawable/checkbox_on_background"
+            android:checked="true"
+            android:text="@string/rap"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <CheckedTextView
+            android:id="@+id/checkboxtextGenre2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:checkMark="@android:drawable/checkbox_on_background"
+            android:checked="false"
+            android:text="@string/alt"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <CheckedTextView
+            android:id="@+id/checkboxtextGenre4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:checkMark="@android:drawable/checkbox_on_background"
+            android:text="@string/funk"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <CheckedTextView
+            android:id="@+id/checkboxtextGenre3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:checkMark="@android:drawable/checkbox_on_background"
+            android:text="@string/edm"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <CheckedTextView
+            android:id="@+id/checkboxtextGenre5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginEnd="20dp"
+            android:checkMark="@android:drawable/checkbox_off_background"
+            android:text="@string/rock"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/savebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignTop="@+id/SongName"
+        android:layout_marginEnd="19dp"
+        android:text="@string/save_rating" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/gridLayout2"
+        android:layout_marginTop="13dp">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="3"
+            android:text="@string/party_vibe_rating"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:text="@string/chill_vibe_rating"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/chillvibevalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_row="1"
+            android:text="@string/chillval"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/PartyvibevalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_row="3"
+            android:text="@string/partyval"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/studyvibevalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_row="5"
+            android:text="@string/studyval"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/freshnessvalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_row="7"
+            android:text="@string/freshnessval"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/vibe1Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="7"
+            android:text="@string/song_freshness"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/studyvibeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="5"
+            android:text="@string/study_vibe_rating"
+            android:textSize="18sp" />
+
+        <SeekBar
+            android:id="@+id/chillseekBar"
+            style="@android:style/Widget.Material.RatingBar.Indicator"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="2"
+            android:layout_columnSpan="3"
+            android:max="100"
+            android:progress="10"
+            android:thumb="@android:drawable/btn_star_big_on" />
+
+        <SeekBar
+            android:id="@+id/partyseekBar"
+            style="@android:style/Widget.Material.RatingBar.Indicator"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="3"
+            android:layout_row="4"
+            android:max="100"
+            android:progress="10"
+            android:thumb="@android:drawable/btn_star_big_on" />
+
+        <SeekBar
+            android:id="@+id/studyseekBar"
+            style="@android:style/Widget.Material.RatingBar.Indicator"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="3"
+            android:layout_row="6"
+            android:max="100"
+            android:progress="10"
+            android:thumb="@android:drawable/btn_star_big_on" />
+
+        <SeekBar
+            android:id="@+id/freshseekBar"
+            style="@android:style/Widget.Material.RatingBar.Indicator"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="3"
+            android:layout_row="8"
+            android:max="100"
+            android:progress="10"
+            android:thumb="@android:drawable/btn_star_big_on" />
+    </GridLayout>
+
+    <GridLayout
+        android:id="@+id/playbackbargrid"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/songbutton"
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:id="@+id/toggle_shuffle_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:textSize="10sp"
+            android:text="@string/toggle_shuffle_button" />
+
+        <Button
+            android:id="@+id/skip_prev_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="0"
+            android:textSize="10sp"
+            android:text="@string/skip_prev_button" />
+        <Button
+            android:id="@+id/pause_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_column="3"
+            android:layout_row="0"
+            android:textSize="10sp"
+            android:text="@string/plause_button" />
+        <Button
+            android:id="@+id/skip_next_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_column="4"
+            android:layout_row="0"
+            android:textSize="10sp"
+            android:text="@string/skip_next_button" />
+        <Button
+            android:id="@+id/play_track_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_column="5"
+            android:layout_row="0"
+            android:textSize="10sp"
+            android:text="@string/track_button" />
+        <Button
+            android:id="@+id/queue_track_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_column="6"
+            android:layout_row="0"
+            android:textSize="10sp"
+            android:text="@string/queue_button" />
+        <Button
+            android:id="@+id/play_album_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_column="7"
+            android:layout_row="0"
+            android:textSize="10sp"
+            android:text="@string/album_button" />
+        <Button
+            android:id="@+id/play_playlist_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_column="8"
+            android:layout_row="0"
+            android:textSize="10sp"
+            android:text="@string/playlist_button" />
+    </GridLayout>
+
+
+</RelativeLayout>
+
