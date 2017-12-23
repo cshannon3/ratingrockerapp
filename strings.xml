@@ -25,5 +25,11 @@
     <string name="track_button">S</string>
     <string name="album_button">A</string>
     <string name="playlist_button">P</string>
+    <string name="datasavebutton">Button</string>
+    <string name="song_id">Song ID</string>
+    <string name="vibes">Vibes</string>
+    <string name="fresh">Fresh</string>
+    <string name="genres">Genres</string>
+    <string name="options_pagetitle">Options Page</string>
 
 </resources>
