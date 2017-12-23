@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">RatingRockerApp</string>
+    <string name="song_name">Song Name</string>
+    <string name="getsong">GetSong</string>
+    <string name="song_info">song info</string>
+    <string name="rap">Rap</string>
+    <string name="alt">Alt</string>
+    <string name="edm">EDM</string>
+    <string name="funk">Funk</string>
+    <string name="rock">Rock</string>
+    <string name="save_rating">Save Rating</string>
+    <string name="song_freshness">Song Freshness</string>
+    <string name="party_vibe_rating">Party Vibe Rating:  </string>
+    <string name="chill_vibe_rating">Chill Vibe Rating:  </string>
+    <string name="study_vibe_rating">Study Vibe Rating:  </string>
+    <string name="chillval">0</string>
+    <string name="partyval">0</string>
+    <string name="studyval">0</string>
+    <string name="freshnessval">0</string>
+    <string name="plause_button">Play</string>
+    <string name="skip_next_button">Skip</string>
+    <string name="skip_prev_button">Last</string>
+    <string name="toggle_shuffle_button">Shuf</string>
+    <string name="queue_button">Q</string>
+    <string name="track_button">S</string>
+    <string name="album_button">A</string>
+    <string name="playlist_button">P</string>
+
+</resources>
