@@ -1,0 +1,23 @@
+package com.ratingrocker.sqlitesample;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import com.ratingrocker.sqlitesample.MyDBHandler;
+import com.ratingrocker.sqlitesample.Vibeonedata;
+import com.ratingrocker.sqlitesample.Vibetwodata;
+import com.ratingrocker.sqlitesample.Vibethreedata;
+import com.ratingrocker.sqlitesample.Genredata;
+
+
+
+
+public class MainActivity extends AppCompatActivity {
+    MyDBHandler db;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        db = new MyDBHandler(getApplicationContext());
+    }
+}
