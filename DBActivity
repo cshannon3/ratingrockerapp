@@ -1,0 +1,89 @@
+package com.ratingrocker.sqlitesample;
+
+//import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+//mport android.view.View;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+//import android.content.ContentValues;
+//import android.content.Context;
+//import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import android.app.Activity;
+//import java.util.List;
+
+
+public class MainActivity extends Activity {
+    MyDBHandler db;
+    TextView t;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.idk);
+        //db = new MyDBHandler(this, null, null, 1);
+        db = new MyDBHandler(this);
+        Button button = findViewById(R.id.button);
+
+        t = (TextView) findViewById(R.id.sog1);
+        //create tags
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+
+
+        Vibeonedata song1 = new Vibeonedata(98, "2voO8ka18WI06vcpDZFy7e","Friction",2,70);
+
+        Vibeonedata song2 = new Vibeonedata(95, "0sAA3arXOVoczn884kfDpx","Supernova",2,75);
+        Vibeonedata song3 = new Vibeonedata(98,"3bWAqKDWg6u1davspr5IkS", "OK",2,70);
+        Vibeonedata song4 = new Vibeonedata(88,"3YGH46uhVtSYP0eTF48Iqk", "Clockwork",2,50);
+        Vibeonedata song5 = new Vibeonedata(98,"2elxgOyiNPM0QYjixON7cn", "Fine",2,60);
+        Vibeonedata song6 = new Vibeonedata(98,"5glXTXNIkUMLIDJVMEBLFQ", "The Stickup",2,99);
+
+        /*db.deleteVibeonesong("0sAA3arXOVoczn884kfDpx");
+                db.deleteVibeonesong("3bWAqKDWg6u1davspr5IkS");
+                db.deleteVibeonesong("3YGH46uhVtSYP0eTF48Iqk");
+                db.deleteVibeonesong("2elxgOyiNPM0QYjixON7cn");
+                db.deleteVibeonesong("5glXTXNIkUMLIDJVMEBLFQ");
+*/
+        db.addVibeonesong(song1);
+
+        db.addVibeonesong(song2);
+        db.addVibeonesong(song3);
+        db.addVibeonesong(song4);
+        db.addVibeonesong(song5);
+        db.addVibeonesong(song6);
+
+        db.databaseToString();
+
+       // button.setOnClickListener(new View.OnClickListener() {
+          //  public void onClick(View v) {
+              //  List<Vibeonedata> allsongs = db.getAllSongs();
+                //int i = 0;
+              //  for (Vibeonedata song : allsongs) {
+                //        TextView t = findViewById(R.id.sog1);
+                //        t.setText(song.get_songname());
+
+
+                }
+           // }
+       });
+
+    }
+
+
+    /*public void printDatabase(){
+
+        String dbString = db.databaseToString();
+        t.setText(dbString);
+
+    }
+    */
+    }
+
+
