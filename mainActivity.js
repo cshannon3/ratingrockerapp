@@ -4,110 +4,94 @@ package com.ratingrocker.httpwww.ratingrockerapp;
 // Copyright (c) 2014 Spotify. All rights reserved.
 
 
-        import android.app.Activity;
-        import android.content.BroadcastReceiver;
-        import android.content.Context;
-        import android.content.Intent;
-        import android.content.IntentFilter;
-        import android.graphics.Bitmap;
-        import android.graphics.Canvas;
-        import android.net.ConnectivityManager;
-        import android.os.Bundle;
-        //import android.os.Parcel;
-        import android.util.Log;
-        //import android.text.TextUtils;
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 
-        import android.view.View;
-        import android.widget.EditText;
-        import android.widget.ExpandableListView;
-        import android.widget.ImageView;
-        import android.widget.ScrollView;
-        import android.widget.TextView;
-        import android.widget.SeekBar;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.util.Log;
 
-        import android.widget.Button;
-        import android.widget.Toast;
+import android.view.View;
+//import android.widget.ExpandableListView;
+// import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.SeekBar;
 
-        //import android.widget.EditText;
-        //import android.widget.ImageView;
-        //import android.widget.ScrollView;
-        //import android.widget.Toast;
-        import com.spotify.sdk.android.authentication.AuthenticationClient;
-        import com.spotify.sdk.android.authentication.AuthenticationRequest;
-        import com.spotify.sdk.android.authentication.AuthenticationResponse;
-        import com.spotify.sdk.android.player.Config;
-        import com.spotify.sdk.android.player.ConnectionStateCallback;
-        import com.spotify.sdk.android.player.Connectivity;
-        import com.spotify.sdk.android.player.Error;
-        import com.spotify.sdk.android.player.Metadata;
-        import com.spotify.sdk.android.player.Player;
-        import com.spotify.sdk.android.player.PlaybackState;
-        import com.spotify.sdk.android.player.PlayerEvent;
-        import com.spotify.sdk.android.player.Spotify;
-        import com.spotify.sdk.android.player.SpotifyPlayer;
-        import com.squareup.picasso.Picasso;
-        import com.squareup.picasso.Transformation;
-        import java.util.ArrayList;
-        import java.util.HashMap;
-        import java.util.List;
+//import android.widget.Toast;
+
+//import android.widget.Toast;
+import com.spotify.sdk.android.authentication.AuthenticationClient;
+import com.spotify.sdk.android.authentication.AuthenticationRequest;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
+import com.spotify.sdk.android.player.Config;
+import com.spotify.sdk.android.player.ConnectionStateCallback;
+import com.spotify.sdk.android.player.Connectivity;
+import com.spotify.sdk.android.player.Error;
+import com.spotify.sdk.android.player.Metadata;
+import com.spotify.sdk.android.player.Player;
+import com.spotify.sdk.android.player.PlaybackState;
+import com.spotify.sdk.android.player.PlayerEvent;
+import com.spotify.sdk.android.player.Spotify;
+import com.spotify.sdk.android.player.SpotifyPlayer;
+
+//import java.util.ArrayList;
+//import java.util.HashMap;
+//import java.util.List;
 
 
 public class MainActivity extends Activity implements
-         SpotifyPlayer.NotificationCallback, ConnectionStateCallback {
+        SpotifyPlayer.NotificationCallback, ConnectionStateCallback {
 
     // TODO: Replace with your client ID
     private static final String CLIENT_ID = "d570917696114c588cc8e1b302d801ed";
     // TODO: Replace with your redirect URI
     private static final String REDIRECT_URI = "rating-rocker-login://callback";
-    @SuppressWarnings("SpellCheckingInspection")
-    private static final String TEST_SONG_URI = "spotify:track:6KywfgRqvgvfJc3JRwaZdZ";
-    @SuppressWarnings("SpellCheckingInspection")
-    private static final String TEST_SONG_MONO_URI = "spotify:track:1FqY3uJypma5wkYw66QOUi";
-    @SuppressWarnings("SpellCheckingInspection")
-    private static final String TEST_SONG_48kHz_URI = "spotify:track:3wxTNS3aqb9RbBLZgJdZgH";
-    @SuppressWarnings("SpellCheckingInspection")
-    private static final String TEST_PLAYLIST_URI = "spotify:user:spotify:playlist:2yLXxKhhziG2xzy7eyD4TD";
-    @SuppressWarnings("SpellCheckingInspection")
-    private static final String TEST_ALBUM_URI = "spotify:album:2lYmxilk8cXJlxxXmns1IU";
-    @SuppressWarnings("SpellCheckingInspection")
-    private static final String TEST_QUEUE_SONG_URI = "spotify:track:5EEOjaJyWvfMglmEwf9bG3";
+
 
 
     // Request code that will be used to verify if the result comes from correct activity
     // Can be any integer
     private static final int REQUEST_CODE = 1337;
 
-    private SpotifyPlayer mPlayer;
+    private Player mPlayer;
     private TextView mMetadataText;
     private PlaybackState mCurrentPlaybackState;
     private BroadcastReceiver mNetworkStateReceiver;
     private static final String TAG = "Mymessages";
     private Metadata mMetadata;
-    //private TextView mStatusText;
+
+    MyDBHandler db;
+    // private TextView mStatusText;
     //private EditText mSeekEditText;
     //private ScrollView mStatusTextScrollView;
-    private static final int[] REQUIRES_INITIALIZED_STATE = {
+    /*
             R.id.play_track_button,
             //R.id.play_mono_track_button,
             //R.id.play_48khz_track_button,
-           R.id.play_album_button,
-           R.id.play_playlist_button,
+            R.id.play_album_button,
+            R.id.play_playlist_button,
             R.id.pause_button,
-           // R.id.seek_button,
-           // R.id.low_bitrate_button,
-           // R.id.normal_bitrate_button,
-           // R.id.high_bitrate_button,
-           // R.id.seek_edittext,
+            // R.id.seek_button,
+            // R.id.low_bitrate_button,
+            // R.id.normal_bitrate_button,
+            // R.id.high_bitrate_button,
+            // R.id.seek_edittext,
     };
-    private static final int[] REQUIRES_PLAYING_STATE = {
+
             R.id.skip_next_button,
             R.id.skip_prev_button,
             R.id.queue_track_button,
             R.id.toggle_shuffle_button,
             R.id.savebutton
-           // R.id.toggle_repeat_button,
+            // R.id.toggle_repeat_button,
 
     };
+
+*/
     private final Player.OperationCallback mOperationCallback = new Player.OperationCallback() {
         @Override
         public void onSuccess() {
@@ -129,19 +113,37 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
         //mStatusText = (TextView) findViewById(R.id.status_text);
         mMetadataText = (TextView) findViewById(R.id.metadata);
+
+        db = new MyDBHandler(this);
+
         //mSeekEditText = (EditText) findViewById(R.id.seek_edittext);
         //mStatusTextScrollView = (ScrollView) findViewById(R.id.status_text_container);
+        /*mButton.setOnClickListener(
+                new Button.OnClickListener() {
+                    public void onClick(View v) {
 
-        updateView();
+                        mMetadata = mPlayer.getMetadata();
+                        if (mMetadata != null && mMetadata.currentTrack != null) {
+                            mMetadataText.setText(mMetadata.contextName + "\n" + mMetadata.currentTrack.name + " - " + mMetadata.currentTrack.artistName);
+
+                        } else {
+                            mMetadataText.setText("<nothing is playing>");
+                        }
+                    }
+
+                });
+*/
+        //updateView();
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
                 REDIRECT_URI);
-        builder.setScopes(new String[]{"user-read-private", "streaming"});
+        builder.setScopes(new String[]{"user-read-private", "playlist-read", "playlist-read-private", "streaming"});
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -153,7 +155,6 @@ public class MainActivity extends Activity implements
             public void onReceive(Context context, Intent intent) {
                 if (mPlayer != null) {
                     Connectivity connectivity = getNetworkConnectivity(getBaseContext());
-
                     mPlayer.setConnectivityStatus(mOperationCallback, connectivity);
                 }
             }
@@ -165,6 +166,16 @@ public class MainActivity extends Activity implements
         if (mPlayer != null) {
             mPlayer.addNotificationCallback(MainActivity.this);
             mPlayer.addConnectionStateCallback(MainActivity.this);
+        }
+    }
+    private Connectivity getNetworkConnectivity(Context context) {
+        ConnectivityManager connectivityManager;
+        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            return Connectivity.fromNetworkType(activeNetwork.getType());
+        } else {
+            return Connectivity.OFFLINE;
         }
     }
 
@@ -185,47 +196,10 @@ public class MainActivity extends Activity implements
                         mPlayer.addConnectionStateCallback(MainActivity.this);
                         mPlayer.addNotificationCallback(MainActivity.this);
                         updateView();
-                        /*Button songbutton = (Button) findViewById(R.id.songbutton);
-                        songbutton.setOnClickListener(
-                                new Button.OnClickListener() {
-                                    public void onClick(View v) {
-
-                                        mMetadata = mPlayer.getMetadata();
-                                        if (mMetadata != null && mMetadata.currentTrack != null) {
-                                            mMetadataText.setText(mMetadata.contextName + "\n" + mMetadata.currentTrack.name + " - " + mMetadata.currentTrack.artistName);
-
-                                        } else {
-                                            mMetadataText.setText("<nothing is playing>");
-                                        }
-                                    }
-                                });
-                            */
-                        /*Button savebutton = (Button) findViewById(R.id.savebutton);
-                        savebutton.setOnClickListener(
-                                new Button.OnClickListener() {
-                                    public void onClick(View v) {
-
-                                        SeekBar partyseek = (SeekBar) findViewById(R.id.partyseekBar);
-                                        TextView partyView = (TextView) findViewById(R.id.PartyvibevalText);
-                                        String partybarvalue = String.valueOf(partyseek.getProgress());
-                                        partyView.setText(partybarvalue);
-                                        SeekBar chillseek = (SeekBar) findViewById(R.id.chillseekBar);
-                                        TextView chillView = (TextView) findViewById(R.id.chillvibevalText);
-                                        String chillbarvalue = String.valueOf(chillseek.getProgress());
-                                        chillView.setText(chillbarvalue);
-                                        SeekBar studyseek = (SeekBar) findViewById(R.id.studyseekBar);
-                                        TextView studyView = (TextView) findViewById(R.id.studyvibevalText);
-                                        String studybarvalue = String.valueOf(studyseek.getProgress());
-                                        studyView.setText(studybarvalue);
-                                        SeekBar freshseek = (SeekBar) findViewById(R.id.freshseekBar);
-                                        TextView freshView = (TextView) findViewById(R.id.freshnessvalText);
-                                        String freshbarvalue = String.valueOf(freshseek.getProgress());
-                                        freshView.setText(freshbarvalue);
-                                    }
-
-                                });
-                                */
                     }
+
+
+
 
                     @Override
                     public void onError(Throwable throwable) {
@@ -235,87 +209,75 @@ public class MainActivity extends Activity implements
             }
         }
     }
+
     private void updateView() {
-        //boolean loggedIn = true;
+        mMetadata = mPlayer.getMetadata();
+            //final ImageView coverArtView = (ImageView) findViewById(R.id.cover_art);
+            if (mMetadata != null && mMetadata.currentTrack != null) {
 
-        // Login button should be the inverse of the logged in state
-        //Button loginButton = (Button) findViewById(R.id.login_button);
-        //loginButton.setText(loggedIn ? R.string.logout_button_label : R.string.login_button_label);
+                mMetadataText.setText(mMetadata.currentTrack.uri + "\n" + mMetadata.currentTrack.name + " - "
+                        + mMetadata.currentTrack.artistName);
+/*
+                Picasso.with(this)
+                        .load(mMetadata.currentTrack.albumCoverWebUrl)
+                        .transform(new Transformation() {
+                            @Override
+                            public Bitmap transform(Bitmap source) {
+                                // really ugly darkening trick
+                                final Bitmap copy = source.copy(source.getConfig(), true);
+                                source.recycle();
+                                final Canvas canvas = new Canvas(copy);
+                                canvas.drawColor(0xbb000000);
+                                return copy;
+                            }
 
-        // Set enabled for all widgets which depend on initialized state
-        for (int id : REQUIRES_INITIALIZED_STATE) {
-            findViewById(id).setEnabled(true);
+                            @Override
+                            public String key() {
+                                return "darken";
+                            }
+                        })
+                        .into(coverArtView);
+*/
+            } else {
+                mMetadataText.setText("<nothing is playing>");
+                //coverArtView.setBackground(null);
+            }
+
         }
 
-        // Same goes for the playing state
-        boolean playing = mCurrentPlaybackState != null && mCurrentPlaybackState.isPlaying;
-        for (int id : REQUIRES_PLAYING_STATE) {
-            findViewById(id).setEnabled(playing);
-        }
 
-        if (mMetadata != null) {
-            findViewById(R.id.skip_next_button).setEnabled(mMetadata.nextTrack != null);
-            findViewById(R.id.skip_prev_button).setEnabled(mMetadata.prevTrack != null);
-            findViewById(R.id.pause_button).setEnabled(mMetadata.currentTrack != null);
-        }
 
-        //final ImageView coverArtView = (ImageView) findViewById(R.id.cover_art);
-        if (mMetadata != null && mMetadata.currentTrack != null) {
-            //final String durationStr = String.format(" (%dms)", mMetadata.currentTrack.durationMs);
-            mMetadataText.setText(mMetadata.contextName + "\n" + mMetadata.currentTrack.name + " - " + mMetadata.currentTrack.artistName);
+     /*Commands for playback */
 
-            /*Picasso.with(this)
-                    .load(mMetadata.currentTrack.albumCoverWebUrl)
-                    .transform(new Transformation() {
-                        @Override
-                        public Bitmap transform(Bitmap source) {
-                            // really ugly darkening trick
-                            final Bitmap copy = source.copy(source.getConfig(), true);
-                            source.recycle();
-                            final Canvas canvas = new Canvas(copy);
-                            canvas.drawColor(0xbb000000);
-                            return copy;
-                        }
+public void onSongButtonClicked(View view){
+    mMetadata = mPlayer.getMetadata();
+    if (mMetadata != null && mMetadata.currentTrack != null) {
 
-                        @Override
-                        public String key() {
-                            return "darken";
-                        }
-                    })
-                    .into(coverArtView);
-                    */
-        } else {
-            mMetadataText.setText("<nothing is playing>");
-            //coverArtView.setBackground(null);
-        }
+        mMetadataText.setText( mMetadata.currentTrack.uri + " - " + mMetadata.currentTrack.artistName);
+
+    } else {
+        mMetadataText.setText("<nothing is playing>");
+    }
+
+}
+    public void onTrackButtonClicked(View view) {
+
+        mPlayer.playUri(mOperationCallback, "spotify:track:5glXTXNIkUMLIDJVMEBLFQ", 0, 0);
+        updateView();
+
+    }
+    public void onAlbumButtonClicked(View view) {
+
+        mPlayer.playUri(mOperationCallback, "spotify:album:7j7cqgeWmYH9PbKe3S5oJj", 0, 0);
+        updateView();
+
+    }
+    public void onPlaylistButtonClicked(View view) {
+
+        mPlayer.playUri(mOperationCallback, "spotify:user:spotify:playlist:37i9dQZF1E9G8oeYG9uL66", 0, 0);
 
     }
 
-    /* Commands for playback */
-
-
-
-    public void onPlayButtonClicked(View view) {
-
-        String uri;
-        switch (view.getId()) {
-            case R.id.play_track_button:
-                uri = TEST_SONG_URI;
-                break;
-
-            case R.id.play_playlist_button:
-                uri = TEST_PLAYLIST_URI;
-                break;
-            case R.id.play_album_button:
-                uri = TEST_ALBUM_URI;
-                break;
-            default:
-                throw new IllegalArgumentException("View ID does not have an associated URI to play");
-        }
-
-
-        mPlayer.playUri(mOperationCallback, uri, 0, 0);
-    }
 
     public void onPauseButtonClicked(View view) {
         if (mCurrentPlaybackState != null && mCurrentPlaybackState.isPlaying) {
@@ -327,25 +289,30 @@ public class MainActivity extends Activity implements
 
     public void onSkipToPreviousButtonClicked(View view) {
         mPlayer.skipToPrevious(mOperationCallback);
+
     }
 
     public void onSkipToNextButtonClicked(View view) {
         mPlayer.skipToNext(mOperationCallback);
+
     }
 
     public void onQueueSongButtonClicked(View view) {
-        mPlayer.queue(mOperationCallback, TEST_QUEUE_SONG_URI);
+        mPlayer.queue(mOperationCallback, "spotify:track:2ms1w53aIRN2nrQsedUua4" );
 
     }
 
     public void onToggleShuffleButtonClicked(View view) {
         mPlayer.setShuffle(mOperationCallback, !mCurrentPlaybackState.isShuffling);
+
     }
 
     public void onToggleRepeatButtonClicked(View view) {
         mPlayer.setRepeat(mOperationCallback, !mCurrentPlaybackState.isRepeating);
     }
+
     public void onSaveButtonClicked(View view) {
+
         SeekBar partyseek = (SeekBar) findViewById(R.id.partyseekBar);
         TextView partyView = (TextView) findViewById(R.id.PartyvibevalText);
         String partybarvalue = String.valueOf(partyseek.getProgress());
@@ -362,7 +329,36 @@ public class MainActivity extends Activity implements
         TextView freshView = (TextView) findViewById(R.id.freshnessvalText);
         String freshbarvalue = String.valueOf(freshseek.getProgress());
         freshView.setText(freshbarvalue);
+        mMetadata = mPlayer.getMetadata();
+        String songname = mMetadata.currentTrack.name;
+        String songidd = mMetadata.currentTrack.uri;
+
+        //int studyval = studyseek.getProgress();
+        //int partyval = partyseek.getProgress();
+        int freshval = freshseek.getProgress();
+        if (chillseek.getProgress() > 60){
+            int chillval = chillseek.getProgress();
+            Vibedata newsong = new Vibedata(chillval, songidd, songname, 2, freshval);
+            db.addnewrating(newsong);
+            db.databaseToString();
+
+        }
+        /*
+        if (studyval > 60){
+            Vibedata song = new Vibedata(studyval, songid, songname, 2, freshval);
+            db.addVibetwosong(song);
+            db.databaseToString();
+            return;
+        }
+        if (partyval > 60){
+            Vibedata song = new Vibedata(partyval, songid, songname, 2, freshval);
+            db.addVibethreesong(song);
+            db.databaseToString();
+            return;
+        }
+*/
     }
+
     /*public void onSeekButtonClicked(View view) {
         final Integer seek = Integer.valueOf(mSeekEditText.getText().toString());
         mPlayer.seekToPosition(mOperationCallback, seek);
@@ -386,11 +382,11 @@ public class MainActivity extends Activity implements
             case kSpPlaybackNotifyTrackChanged:
                 mCurrentPlaybackState = mPlayer.getPlaybackState();
                 mMetadata = mPlayer.getMetadata();
-                Log.i(TAG, "Player state: " + mCurrentPlaybackState);
-                Log.i(TAG, "Metadata: " + mMetadata);
+                Log.e(TAG, "Player state: " + mCurrentPlaybackState);
+                Log.e(TAG, "Metadata: " + mMetadata);
                 updateView();
                 break;
-            /*
+
             case kSpPlaybackNotifyNext:
                 break;
             case kSpPlaybackNotifyPrev:
@@ -420,7 +416,7 @@ public class MainActivity extends Activity implements
             case kSpPlaybackNotifyMetadataChanged:
 
                 break;
-                */
+
 
             default:
 
@@ -468,6 +464,4 @@ public class MainActivity extends Activity implements
     }
 
 
-
 }
-
