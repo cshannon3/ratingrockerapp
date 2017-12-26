@@ -1,5 +1,7 @@
 package com.ratingrocker.httpwww.ratingrockerapp;
 
+
+
         import android.content.ContentValues;
         import android.content.Context;
         import android.database.Cursor;
@@ -300,6 +302,34 @@ db.close();
     }
 
 
+public void getrequestlist(int rvalmin, int rvalmax, int fvalmin, int fvalmax){
+    SQLiteDatabase db = getWritableDatabase();
+    //String selectquery = "Select * from " + TABLE_VIBEONE + " SQL ORDER BY " + COLUMN_RATINGVAL + " DESC ", new  {};
+    Cursor c = db.query(TABLE_VIBEONE, null, null,
+            null, null, null, COLUMN_RATINGVAL + " DESC", null);
+    try {
+        while (c.moveToNext()) {
+            if ((rvalmin < c.getInt(1)) && (c.getInt(1) < rvalmax) && (fvalmin < c.getInt(5)) && (c.getInt(5) < fvalmax)) {
+                int id = c.getInt(0);
+                int ratingval = c.getInt(1);
+                String songid = c.getString(2);
+                String songname = c.getString(3);
+                int ratecount = c.getInt(4);
+                Log.e("ID", String.valueOf(id));
+                Log.e("Rating", String.valueOf(ratingval));
+                Log.e("Songid", songid);
+                Log.e("Song Name", songname);
+                Log.e("Rate Count", String.valueOf(ratecount));
+            }else {Log.e("Song not in rang", c.getString(3));}
+        }
+    } finally {
+        c.close();
+    }
+
+
+    db.close();
+}
+
 
 
 }
@@ -389,4 +419,4 @@ db.close();
         td.set_freshvalue(c.getInt(c.getColumnIndex(COLUMN_FRESHVAL)));
         return td;
     }
-
+*/
