@@ -4,7 +4,7 @@ package com.ratingrocker.httpwww.ratingrockerapp;
 // Copyright (c) 2014 Spotify. All rights reserved.
 
 
-import android.app.Activity;
+import android.app.*;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +39,8 @@ import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 
+
+
 //import java.util.ArrayList;
 //import java.util.HashMap;
 //import java.util.List;
@@ -52,8 +54,6 @@ public class MainActivity extends Activity implements
     // TODO: Replace with your redirect URI
     private static final String REDIRECT_URI = "rating-rocker-login://callback";
 
-
-
     // Request code that will be used to verify if the result comes from correct activity
     // Can be any integer
     private static final int REQUEST_CODE = 1337;
@@ -64,17 +64,10 @@ public class MainActivity extends Activity implements
     private BroadcastReceiver mNetworkStateReceiver;
     private static final String TAG = "Mymessages";
     private Metadata mMetadata;
-    private CheckBox rap, alt, rock, fuck, edm;
+    private CheckBox rap, alt, rock, funk, edm;
     private SeekBar partyseek, chillseek, studyseek, freshseek;
     MyDBHandler db;
-    // private TextView mStatusText;
-    //private EditText mSeekEditText;
-    //private ScrollView mStatusTextScrollView;
-    /*
 
-    };
-
-*/
     private final Player.OperationCallback mOperationCallback = new Player.OperationCallback() {
         @Override
         public void onSuccess() {
@@ -104,6 +97,11 @@ public class MainActivity extends Activity implements
         studyView = (TextView) findViewById(R.id.studyvibevalText);
         freshseek = (SeekBar) findViewById(R.id.freshseekBar);
         freshView = (TextView) findViewById(R.id.freshnessvalText);
+        rap = (CheckBox) findViewById(R.id.checkboxtextGenre1);
+        alt = (CheckBox) findViewById(R.id.checkboxtextGenre2);
+        rock = (CheckBox) findViewById(R.id.checkboxtextGenre3);
+        funk = (CheckBox) findViewById(R.id.checkboxtextGenre4);
+        edm = (CheckBox) findViewById(R.id.checkboxtextGenre5);
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
                 REDIRECT_URI);
@@ -159,7 +157,7 @@ public class MainActivity extends Activity implements
                         mPlayer = spotifyPlayer;
                         mPlayer.addConnectionStateCallback(MainActivity.this);
                         mPlayer.addNotificationCallback(MainActivity.this);
-                        updateView();
+
                     }
                     @Override
                     public void onError(Throwable throwable) {
@@ -169,29 +167,34 @@ public class MainActivity extends Activity implements
             }
         }
     }
-
+public void onPlaylistButtonClicked(View view){
+    Intent i = new Intent(this, MyListActivity.class);
+    startActivity(i);
+}
     private void updateView() {
         mMetadata = mPlayer.getMetadata();
         partyseek.setProgress(10);
-        partyView.setText("10");
+        partyView.setText("");
         chillseek.setProgress(10);
         studyseek.setProgress(10);
         freshseek.setProgress(10);
-        chillView.setText("10");
-        studyView.setText("10");
-        freshView.setText("10");
+        chillView.setText("");
+        studyView.setText("");
+        freshView.setText("");
 
             if (mMetadata != null && mMetadata.currentTrack != null) {
                 mplaylist.setText(mMetadata.contextName);
                 mMetadataText.setText( mMetadata.currentTrack.name + " - "
                         + mMetadata.currentTrack.artistName);
-/*
-
-*/
             } else {
                 mMetadataText.setText("<nothing is playing>");
                 //coverArtView.setBackground(null);
             }
+        rap.setChecked(false);
+        alt.setChecked(false);
+        funk.setChecked(false);
+        edm.setChecked(false);
+        rock.setChecked(false);
         }
      /*Commands for playback */
 
@@ -199,7 +202,7 @@ public class MainActivity extends Activity implements
     public void onTrackButtonClicked(View view) {
 
         mPlayer.playUri(mOperationCallback, "spotify:track:5glXTXNIkUMLIDJVMEBLFQ", 0, 0);
-        //updateView();
+
 
     }
     public void onAlbumButtonClicked(View view) {
@@ -225,15 +228,15 @@ public class MainActivity extends Activity implements
         }else{ newuri = uri2;}
 
         mPlayer.playUri(mOperationCallback, newuri, 0, 0);
-       // updateView();
+
 
     }
 
-    public void onPlaylistButtonClicked(View view) {
+    //public void onPlaylistButtonClicked(View view) {
 
-        mPlayer.playUri(mOperationCallback, "spotify:user:spotify:playlist:37i9dQZF1E9G8oeYG9uL66", 0, 0);
+     //   mPlayer.playUri(mOperationCallback, "spotify:user:spotify:playlist:37i9dQZF1E9G8oeYG9uL66", 0, 0);
 
-    }
+    //}
 
 
     public void onPauseButtonClicked(View view) {
@@ -269,11 +272,9 @@ public class MainActivity extends Activity implements
     }
     public void onGClicked(View view){
 
-
     }
-
     public void onSaveButtonClicked(View view) {
-
+        int genreval = 1;
         partyView.setText(String.valueOf(partyseek.getProgress()));
         chillView.setText(String.valueOf(chillseek.getProgress()));
         studyView.setText(String.valueOf(studyseek.getProgress()));
@@ -281,13 +282,34 @@ public class MainActivity extends Activity implements
         mMetadata = mPlayer.getMetadata();
         String songname = mMetadata.currentTrack.name;
         String songidd = mMetadata.currentTrack.uri;
+        if (rap.isChecked()){
+            Log.e("GENRE", "RAP");
+            genreval=genreval*3;
+        }
+        if (alt.isChecked()){
+            Log.e("GENRE", "ALT");
+            genreval=genreval*5;
+        }
+        if (edm.isChecked()){
+            Log.e("GENRE", "EDM");
+            genreval=genreval*7;
+        }
+        if (funk.isChecked()){
+            Log.e("GENRE", "FUNK");
+            genreval=genreval*11;
+        }
+        if (rock.isChecked()){
+            Log.e("GENRE", "ROCK");
+            genreval=genreval*13;
+        }
+        Log.e("G val", String.valueOf(genreval));
 
         int freshval = freshseek.getProgress();
         if (chillseek.getProgress() > 60){
             int chillval = chillseek.getProgress();
-            Vibedata newsong = new Vibedata(chillval, songidd, songname, 2, freshval);
+            Vibedata newsong = new Vibedata(chillval, songidd, songname, 2, freshval, genreval);
             db.addnewrating(newsong);
-            db.getrequestlist(70, 90, 0, 100);
+            db.getrequestlist(70, 90, 0, 100, 33);
             //db.databaseToString();
 
         }
@@ -328,13 +350,7 @@ public class MainActivity extends Activity implements
             case kSpPlaybackNotifyPause:
                 break;
             case kSpPlaybackNotifyTrackChanged:
-                mCurrentPlaybackState = mPlayer.getPlaybackState();
-                mMetadata = mPlayer.getMetadata();
-                Log.e(TAG, "Player state: " + mCurrentPlaybackState);
-                Log.e(TAG, "Metadata: " + mMetadata);
-                updateView();
                 break;
-
             case kSpPlaybackNotifyNext:
                 break;
             case kSpPlaybackNotifyPrev:
@@ -362,7 +378,9 @@ public class MainActivity extends Activity implements
             case kSpPlaybackNotifyTrackDelivered:
                 break;
             case kSpPlaybackNotifyMetadataChanged:
-
+                mMetadata = mPlayer.getMetadata();
+                Log.e(TAG, "Metadata: " + mMetadata);
+                updateView();
                 break;
 
             default:
