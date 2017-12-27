@@ -6,37 +6,24 @@
     tools:context="com.ratingrocker.httpwww.ratingrockerapp.MainActivity">
 
 
-    <Button
-        android:id="@+id/songbutton"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:text="@string/getsong"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
 
     <TextView
-        android:id="@+id/metadata"
+        android:id="@+id/metadatas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/song_info"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         android:layout_alignParentTop="true"
         android:layout_marginTop="11dp" />
-
     <TextView
-        android:id="@+id/SongName"
-        android:layout_width="163dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="23dp"
-        android:text="@string/song_name"
+        android:id="@+id/metadata"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/song_info"
+        android:layout_below="@+id/metadatas"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:layout_marginTop="11dp" />
 
-        tools:layout_editor_absoluteX="124dp"
-        tools:layout_editor_absoluteY="41dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="59dp" />
 
     <GridLayout
         android:layout_width="wrap_content"
@@ -46,71 +33,69 @@
         android:layout_below="@+id/playbackbargrid"
         android:layout_alignParentEnd="true">
 
-        <CheckedTextView
+        <CheckBox
             android:id="@+id/checkboxtextGenre1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="5dp"
             android:checkMark="@android:drawable/checkbox_on_background"
-            android:checked="true"
+            android:checked="false"
             android:text="@string/rap"
             android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
-        <CheckedTextView
+        <CheckBox
             android:id="@+id/checkboxtextGenre2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="5dp"
             android:checkMark="@android:drawable/checkbox_on_background"
             android:checked="false"
             android:text="@string/alt"
             android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
-        <CheckedTextView
+        <CheckBox
             android:id="@+id/checkboxtextGenre4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="5dp"
             android:checkMark="@android:drawable/checkbox_on_background"
             android:text="@string/funk"
+            android:checked="false"
+            android:onClick="onGClicked"
             android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
-        <CheckedTextView
+        <CheckBox
             android:id="@+id/checkboxtextGenre3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="5dp"
             android:checkMark="@android:drawable/checkbox_on_background"
             android:text="@string/edm"
+            android:checked="false"
+            android:onClick="onGClicked"
             android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
-        <CheckedTextView
+        <CheckBox
             android:id="@+id/checkboxtextGenre5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="25dp"
             android:checkMark="@android:drawable/checkbox_off_background"
             android:text="@string/rock"
+            android:checked="false"
+            android:onClick="onGClicked"
             android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
+
     </GridLayout>
-
-    <Button
-        android:id="@+id/savebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignTop="@+id/SongName"
-        android:layout_marginEnd="19dp"
-        android:text="@string/save_rating" />
 
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/gridLayout2"
-        android:layout_marginTop="13dp">
+        android:layout_marginTop="13dp"
+        android:id="@+id/gridLayout">
 
         <TextView
             android:id="@+id/textView3"
@@ -231,13 +216,24 @@
             android:max="100"
             android:progress="10"
             android:thumb="@android:drawable/btn_star_big_on" />
+        <Button
+            android:id="@+id/savebutton"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_column="0"
+            android:layout_row="9"
+            android:layout_marginEnd="19dp"
+            android:onClick="onSaveButtonClicked"
+            android:text="@string/save_rating" />
+
+
     </GridLayout>
 
     <GridLayout
         android:id="@+id/playbackbargrid"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/songbutton"
+        android:layout_below="@+id/metadata"
         android:layout_alignParentStart="true">
 
         <Button
@@ -247,6 +243,7 @@
             android:layout_column="0"
             android:layout_row="0"
             android:textSize="10sp"
+            android:onClick="onToggleShuffleButtonClicked"
             android:text="@string/toggle_shuffle_button" />
 
         <Button
@@ -256,6 +253,7 @@
             android:layout_column="1"
             android:layout_row="0"
             android:textSize="10sp"
+            android:onClick="onSkipToPreviousButtonClicked"
             android:text="@string/skip_prev_button" />
         <Button
             android:id="@+id/pause_button"
@@ -264,7 +262,8 @@
             android:layout_column="3"
             android:layout_row="0"
             android:textSize="10sp"
-            android:text="@string/plause_button" />
+            android:onClick="onPlayButtonClicked"
+            android:text="@string/play_track_button" />
         <Button
             android:id="@+id/skip_next_button"
             android:layout_width="50dp"
@@ -272,6 +271,7 @@
             android:layout_column="4"
             android:layout_row="0"
             android:textSize="10sp"
+            android:onClick="onSkipToNextButtonClicked"
             android:text="@string/skip_next_button" />
         <Button
             android:id="@+id/play_track_button"
@@ -280,6 +280,7 @@
             android:layout_column="5"
             android:layout_row="0"
             android:textSize="10sp"
+            android:onClick="onTrackButtonClicked"
             android:text="@string/track_button" />
         <Button
             android:id="@+id/queue_track_button"
@@ -288,6 +289,7 @@
             android:layout_column="6"
             android:layout_row="0"
             android:textSize="10sp"
+            android:onClick="onQueueSongButtonClicked"
             android:text="@string/queue_button" />
         <Button
             android:id="@+id/play_album_button"
@@ -296,6 +298,7 @@
             android:layout_column="7"
             android:layout_row="0"
             android:textSize="10sp"
+            android:onClick="onAlbumButtonClicked"
             android:text="@string/album_button" />
         <Button
             android:id="@+id/play_playlist_button"
@@ -304,9 +307,16 @@
             android:layout_column="8"
             android:layout_row="0"
             android:textSize="10sp"
+            android:onClick="onPlaylistButtonClicked"
             android:text="@string/playlist_button" />
     </GridLayout>
 
 
+
+
+
+
 </RelativeLayout>
+
+
 
