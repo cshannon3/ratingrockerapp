@@ -1,5 +1,9 @@
 package com.ratingrocker.httpwww.ratingrockerapp;
 
+//TODO Create Tables for vibe 2 and 3...maybe 4/ manyby make 1 solo
+// TODO Create table for playlists
+//TODO create table for vibe playlist average/ size/ st dev
+
         import android.content.ContentValues;
         import android.content.Context;
         import android.database.Cursor;
@@ -12,12 +16,12 @@ package com.ratingrocker.httpwww.ratingrockerapp;
         import java.util.List;
 
 public class MyDBHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "songdata.db";
     // Table Names
     //public static final String TABLE_MAIN = "main";
     //public static final String TABLE_GENRES = "genres";
-    private static final String TABLE_VIBEONE = "vibeone";
+    private static final String TABLE_VIBE1 = "vibe1";
     private static final String TABLE_VIBETWO = "vibetwo";
     private static final String TABLE_VIBETHREE = "vibethree";
     //public static final String TABLE_USER = "user";
@@ -27,16 +31,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     private static final String COLUMN_RATINGVAL = "ratingval";
     private static final String COLUMN_RATECOUNT = "ratecount";
     private static final String COLUMN_SONGNAME = "songname";
-
-
-    //User Table column names
-
-    // GENRE TABLE column names
-    //public static final String COLUMN_G_ONE_VAL = "_goneval";
-    //public static final String COLUMN_G_TWO_VAL = "_gtwoval";
-    //public static final String COLUMN_G_THREE_VAL = "_gthreeval";
-    // public static final String COLUMN_G_FOUR_VAL = "_gfourval";
-    // public static final String COLUMN_G_FIVE_VAL = "_gfiveval";
+    private static final String COLUMN_GVAL = "gval";
 
 
     // SONG Data Table MAIN - column names
@@ -80,14 +75,14 @@ public class MyDBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query1 = "CREATE TABLE "
-                + TABLE_VIBEONE + "("
+                + TABLE_VIBE1 + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY,"
                 + COLUMN_RATINGVAL + " INTEGER,"
                 + COLUMN_SONGID + " TEXT,"
                 + COLUMN_SONGNAME + " TEXT,"
                 + COLUMN_RATECOUNT + " INTEGER,"
-                + COLUMN_FRESHVAL + " INTEGER"
-                + ");";
+                + COLUMN_FRESHVAL + " INTEGER,"
+                + COLUMN_GVAL + " INTEGER" + ");";
         /*
         String query2 = "CREATE TABLE "
                 + TABLE_VIBETWO + "("
@@ -123,7 +118,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // on upgrade drop older tables
         //db.execSQL("DROP TABLE IF EXISTS " + TABLE_GENRES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_VIBEONE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_VIBE1);
        /* db.execSQL("DROP TABLE IF EXISTS " + TABLE_VIBETWO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_VIBETHREE);
         // db.execSQL("DROP TABLE IF EXISTS " + TABLE_MAIN);
@@ -160,8 +155,9 @@ public class MyDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_SONGNAME, vibeone.get_songname());
         values.put(COLUMN_RATECOUNT, vibeone.get_ratecount());
         values.put(COLUMN_FRESHVAL, vibeone.get_freshvalue());
+        values.put(COLUMN_GVAL, vibeone.get_gval());
 
-        db.insert(TABLE_VIBEONE, null, values);
+        db.insert(TABLE_VIBE1, null, values);
         db.close();
         //return vibeone_id;
     }
@@ -196,16 +192,16 @@ public class MyDBHandler extends SQLiteOpenHelper {
     */
     public void deleteVibeonesong(String song_id){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_VIBEONE + " WHERE " + COLUMN_SONGID + "=\"" + song_id + "\";");
+        db.execSQL("DELETE FROM " + TABLE_VIBE1 + " WHERE " + COLUMN_SONGID + "=\"" + song_id + "\";");
     }
     public void deletetable(){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE * FROM " + TABLE_VIBEONE);
+        db.execSQL("DELETE * FROM " + TABLE_VIBE1);
     }
     public void databaseToString() {
         //String dbString = "";
         SQLiteDatabase db = getWritableDatabase();
-        String query = "Select * from " + TABLE_VIBEONE;
+        String query = "Select * from " + TABLE_VIBE1;
         //String querytwo = "Select * from " + TABLE_VIBETWO;
         //String querythree = "Select * from " + TABLE_VIBETHREE;
         Cursor c = db.rawQuery(query, null);
@@ -234,7 +230,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public List<Vibedata> getAllSongs() {
         List<Vibedata> songs = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_VIBEONE;
+        String selectQuery = "SELECT * FROM " + TABLE_VIBE1;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
@@ -269,7 +265,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         */
     public void addnewrating( Vibedata song) {
         SQLiteDatabase db = getWritableDatabase();
-        String selectquery = "Select * from " + TABLE_VIBEONE + " WHERE " + COLUMN_SONGID + "=\"" + song.get_songid() + "\";";
+        String selectquery = "Select * from " + TABLE_VIBE1 + " WHERE " + COLUMN_SONGID + "=\"" + song.get_songid() + "\";";
         Cursor c = db.rawQuery(selectquery, null);
         int p = 0;
         if (c.moveToFirst()){
@@ -287,7 +283,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             values.put(COLUMN_RATECOUNT, newratingcount);
             values.put(COLUMN_FRESHVAL, song.get_freshvalue());
 
-            db.update(TABLE_VIBEONE, values, COLUMN_ID + " = ?",
+            db.update(TABLE_VIBE1, values, COLUMN_ID + " = ?",
                     new String[]{String.valueOf(c.getInt(c.getPosition()))});
             c.close();
             db.close();
@@ -300,7 +296,40 @@ db.close();
     }
 
 
+public void getrequestlist(int rvalmin, int rvalmax, int fvalmin, int fvalmax, int gval){
+    SQLiteDatabase db = getWritableDatabase();
+    //String selectquery = "Select * from " + TABLE_VIBEONE + " SQL ORDER BY " + COLUMN_RATINGVAL + " DESC ", new  {};
+    Cursor c = db.query(TABLE_VIBE1, null, null,
+            null, null, null, COLUMN_RATINGVAL + " DESC", null);
+    List<Integer> gtestlist = new ArrayList<>();
+    gtestlist.add(3); gtestlist.add(5); gtestlist.add(7); gtestlist.add(11);gtestlist.add(13);
+    Log.e("GList", String.valueOf(gtestlist));
+    try {
+        while (c.moveToNext()) {
+            if ((rvalmin < c.getInt(1)) && (c.getInt(1) < rvalmax) && (fvalmin < c.getInt(5)) && (c.getInt(5) < fvalmax)) {
+                int i = 0;
 
+                while (i<5){
+                    if ((gval%gtestlist.get(i)==0)&&(c.getInt(6)%gtestlist.get(i)==0)){
+                    int id = c.getInt(0);
+                    int ratingval = c.getInt(1);
+                    String songid = c.getString(2);
+                    String songname = c.getString(3);
+                    int ratecount = c.getInt(4);
+                    Log.e("ID", String.valueOf(id));
+                    Log.e("Rating", String.valueOf(ratingval));
+                    Log.e("Songid", songid);
+                    Log.e("Song Name", songname);
+                    Log.e("Rate Count", String.valueOf(ratecount));
+                        i = 5;
+                    }else {i +=1;}}
+            }else {Log.e("Song not in rang", c.getString(3));}
+        }
+    } finally {
+        c.close();
+        db.close();
+    }
+}
 
 }
 // c.close();
@@ -389,4 +418,4 @@ db.close();
         td.set_freshvalue(c.getInt(c.getColumnIndex(COLUMN_FRESHVAL)));
         return td;
     }
-
+*/
